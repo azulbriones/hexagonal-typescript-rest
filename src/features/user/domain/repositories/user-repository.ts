@@ -8,4 +8,5 @@ export interface UserRepository {
   ): Promise<UserModel | null>;
 
   getAllUsers(): Promise<UserModel[]>;
+  getUserById(id: number): Promise<UserModel | null>;
 }

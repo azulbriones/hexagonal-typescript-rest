@@ -11,6 +11,35 @@ export class PostgreSqlUserRepository implements UserRepository {
   constructor() {
     this.pool = pool;
   }
+  async getUserById(id: number): Promise<UserModel | null> {
+    let client: PoolClient | null = null;
+    try {
+      client = await this.pool.connect();
+  
+      const query = "SELECT * FROM users WHERE id = $1";
+      const values = [id];
+      const result = await client.query(query, values);
+  
+      if (result.rowCount === 1) {
+        const userRow = result.rows[0];
+        return new UserEntity(
+          userRow.id,
+          userRow.name,
+          userRow.email,
+          userRow.password
+        );
+      }
+      return null;
+    } catch (error) {
+      console.error("Error obteniendo el usuario por ID:", error);
+      return null;
+    } finally {
+      if (client) {
+        client.release();
+      }
+    }
+  }
+  
   async getAllUsers(): Promise<UserModel[]> {
     let client: PoolClient | null = null;
     try {
