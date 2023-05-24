@@ -11,6 +11,32 @@ export class PostgreSqlUserRepository implements UserRepository {
   constructor() {
     this.pool = pool;
   }
+  async getAllUsers(): Promise<UserModel[]> {
+    let client: PoolClient | null = null;
+    try {
+      client = await this.pool.connect();
+  
+      const query = "SELECT * FROM users";
+      const result = await client.query(query);
+  
+      const users: UserModel[] = result.rows.map((row) => ({
+        id: row.id,
+        name: row.name,
+        email: row.email,
+        password: row.password,
+      }));
+  
+      return users;
+    } catch (error) {
+      console.error("Error retornando los usuarios:", error);
+      return [];
+    } finally {
+      if (client) {
+        client.release();
+      }
+    }
+  }
+  
 
   async createUser(
     name: string,
@@ -37,7 +63,7 @@ export class PostgreSqlUserRepository implements UserRepository {
       }
       return null;
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Error creando el usuario:", error);
       return null;
     } finally {
       if (client) {

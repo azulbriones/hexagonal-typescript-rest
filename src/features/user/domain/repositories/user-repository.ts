@@ -6,4 +6,6 @@ export interface UserRepository {
     email: string,
     password: string
   ): Promise<UserModel | null>;
+
+  getAllUsers(): Promise<UserModel[]>;
 }
