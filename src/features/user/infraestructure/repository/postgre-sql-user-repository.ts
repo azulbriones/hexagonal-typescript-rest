@@ -3,7 +3,7 @@ import { Pool, PoolClient } from "pg";
 import { UserEntity } from "../../domain/entities/user-entity";
 import { UserModel } from "../../domain/models/user-model";
 import { UserRepository } from "../../domain/repositories/user-repository";
-import pool from "./postgre-sql-config";
+import pool from "../config/postgre-sql-config";
 
 export class PostgreSqlUserRepository implements UserRepository {
   private pool: Pool;

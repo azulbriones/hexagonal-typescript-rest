@@ -1,6 +1,6 @@
 import { CreateNewUserUseCase } from "../application/usecases/create-new-user-use-case";
 import { CreateNewUserController } from "./controllers/create-new-user-controller";
-import { PostgreSqlUserRepository } from "./postgresql/postgre-sql-user-repository";
+import { PostgreSqlUserRepository } from "./repository/postgre-sql-user-repository";
 import { GetAllUsersUseCase } from '../application/usecases/get-all-users-use-case';
 import { GetAllUsersController } from './controllers/get-all-users-controller';
 import { GetUserByIdUseCase } from '../application/usecases/get-user-by-id-use-case';
