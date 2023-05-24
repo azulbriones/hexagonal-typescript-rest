@@ -1,23 +1,16 @@
-import { config as dotEnvConfig } from "dotenv";
-dotEnvConfig();
-
 import bodyParser from "body-parser";
 import express from "express";
 
-import { config } from "./config";
-import { healthRouter } from "./health/health-router";
+import { userRouter } from "./features/user/infraestructure/routes/user-router";
 
-function boostrap() {
-  const app = express();
+const app = express();
 
-  app.use(bodyParser.json());
-  app.use("/health", healthRouter);
+const PORT = 3000;
 
-  const { port } = config.server;
+app.use(bodyParser.json());
 
-  app.listen(port, () => {
-    console.log(`[APP] - Starting application on port ${port}`);
-  });
-}
+app.use("/users/", userRouter);
 
-boostrap();
+app.listen(PORT, () => {
+  console.log(`[APP] - Starting application on port ${PORT}`);
+});
