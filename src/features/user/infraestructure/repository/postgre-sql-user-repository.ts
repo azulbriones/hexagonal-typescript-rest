@@ -11,15 +11,43 @@ export class PostgreSqlUserRepository implements UserRepository {
   constructor() {
     this.pool = pool;
   }
+  async getUserByName(name: string): Promise<UserModel | null> {
+    let client: PoolClient | null = null;
+    try {
+      client = await this.pool.connect();
+
+      const query = "SELECT * FROM users WHERE name = $1";
+      const values = [name];
+      const result = await client.query(query, values);
+
+      if (result.rowCount === 1) {
+        const userRow = result.rows[0];
+        return new UserEntity(
+          userRow.id,
+          userRow.name,
+          userRow.email,
+          userRow.password
+        );
+      }
+      return null;
+    } catch (error) {
+      console.error("Error obteniendo el usuario por NOMBRE:", error);
+      return null;
+    } finally {
+      if (client) {
+        client.release();
+      }
+    }
+  }
   async getUserById(id: number): Promise<UserModel | null> {
     let client: PoolClient | null = null;
     try {
       client = await this.pool.connect();
-  
+
       const query = "SELECT * FROM users WHERE id = $1";
       const values = [id];
       const result = await client.query(query, values);
-  
+
       if (result.rowCount === 1) {
         const userRow = result.rows[0];
         return new UserEntity(
@@ -39,22 +67,22 @@ export class PostgreSqlUserRepository implements UserRepository {
       }
     }
   }
-  
+
   async getAllUsers(): Promise<UserModel[]> {
     let client: PoolClient | null = null;
     try {
       client = await this.pool.connect();
-  
+
       const query = "SELECT * FROM users";
       const result = await client.query(query);
-  
+
       const users: UserModel[] = result.rows.map((row) => ({
         id: row.id,
         name: row.name,
         email: row.email,
         password: row.password,
       }));
-  
+
       return users;
     } catch (error) {
       console.error("Error retornando los usuarios:", error);
@@ -65,7 +93,6 @@ export class PostgreSqlUserRepository implements UserRepository {
       }
     }
   }
-  
 
   async createUser(
     name: string,

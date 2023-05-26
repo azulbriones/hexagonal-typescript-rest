@@ -9,4 +9,5 @@ export interface UserRepository {
 
   getAllUsers(): Promise<UserModel[]>;
   getUserById(id: number): Promise<UserModel | null>;
+  getUserByName(name: string): Promise<UserModel | null>;
 }
