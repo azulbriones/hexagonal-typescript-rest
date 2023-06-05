@@ -4,6 +4,6 @@ export class GetAllUsersUseCase {
   constructor(readonly userRepository: UserRepository) {}
 
   async run() {
-   return await this.userRepository.getAllUsers();
+    return await this.userRepository.getAllUsers();
   }
 }

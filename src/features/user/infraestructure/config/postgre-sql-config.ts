@@ -4,13 +4,12 @@ import { Pool } from "pg";
 dotenv.config();
 
 const postgreSqlConfig = {
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  host: process.env.POSTGRES_HOST,
-  port: process.env.POSTGRES_PORT,
-  database: process.env.POSTGRES_DATABASE,
+  user: 'postgres',
+  password: '0609_203720',
+  host: 'database-1.cqpv58t1byxx.us-east-1.rds.amazonaws.com',
+  port: '5432',
+  database: 'hexagonal',
 };
-
 const pool = new Pool({
   user: postgreSqlConfig.user,
   password: postgreSqlConfig.password,
